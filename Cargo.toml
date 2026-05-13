@@ -1,0 +1,17 @@
+[package]
+name = "lh_filter"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+# Required to produce a dynamic library that DAWs can load
+crate-type = ["cdylib"]
+
+[dependencies]
+# Core framework and UI integration
+nih_plug = { git = "https://github.com/robbert-vdh/nih-plug.git", features = ["assert_process_allocs"] }
+nih_plug_egui = { git = "https://github.com/robbert-vdh/nih-plug.git" }
+serde = { version = "1.0", features = ["derive"] }
+
+[workspace]
+members = ["xtask"]
