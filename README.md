@@ -1,6 +1,6 @@
 # LHFilter
 
-**LHFilter** is a professional-grade VST3 audio plugin that features highly optimized Low-Pass and High-Pass filters, alongside precise Q-Factor resonance control. Built on the blazing-fast Rust `nih-plug` framework and featuring a custom `egui` graphical interface, it is designed for both performance and premium user experience.
+**LHFilter** is a VST3 audio plugin that features highly optimized Low-Pass and High-Pass filters, alongside precise Q-Factor resonance control. Built on the blazing-fast Rust `nih-plug` framework and featuring a custom `egui` graphical interface, it is designed for both performance and premium user experience.
 
 ## Features
 - **Low-Pass & High-Pass Filters**: 20 Hz to 20,000 Hz coverage utilizing flawless mathematical logarithmic scaling (`FloatRange::Skewed`) for smooth, natural frequency sweeping.
