@@ -28,7 +28,7 @@ pub struct MyFilterParams {
 impl Default for MyFilterParams {
     fn default() -> Self {
         Self {
-            editor_state: EguiState::from_size(500, 500),
+            editor_state: EguiState::from_size(370, 420),
             lp_freq: FloatParam::new(
                 "LP Frequency",
                 20000.0,
@@ -39,7 +39,15 @@ impl Default for MyFilterParams {
                 },
             )
             .with_unit(" Hz")
-            .with_smoother(SmoothingStyle::Logarithmic(50.0)),
+            .with_smoother(SmoothingStyle::Logarithmic(50.0))
+            .with_value_to_string(Arc::new(|v| format!("{:.0} Hz", v)))
+            .with_string_to_value(Arc::new(|s| {
+                let cleaned: String = s.replace("Hz", "").replace("hz", "");
+                let digits: String = cleaned.trim().chars()
+                    .filter(|c| c.is_ascii_digit() || *c == '.' || *c == '-')
+                    .collect();
+                digits.parse::<f32>().ok()
+            })),
 
             hp_freq: FloatParam::new(
                 "HP Frequency",
@@ -51,19 +59,32 @@ impl Default for MyFilterParams {
                 },
             )
             .with_unit(" Hz")
-            .with_smoother(SmoothingStyle::Logarithmic(50.0)),
+            .with_smoother(SmoothingStyle::Logarithmic(50.0))
+            .with_value_to_string(Arc::new(|v| format!("{:.0} Hz", v)))
+            .with_string_to_value(Arc::new(|s| {
+                let cleaned: String = s.replace("Hz", "").replace("hz", "");
+                let digits: String = cleaned.trim().chars()
+                    .filter(|c| c.is_ascii_digit() || *c == '.' || *c == '-')
+                    .collect();
+                digits.parse::<f32>().ok()
+            })),
 
             q: FloatParam::new(
                 "Q",
-                10.0,
+                0.50,
                 FloatRange::Linear {
                     min: 0.1,
                     max: 10.0,
                 },
             )
-            .with_smoother(SmoothingStyle::Linear(50.0)),
+            .with_smoother(SmoothingStyle::Linear(50.0))
+            .with_value_to_string(Arc::new(|v| format!("{:.2}", v)))
+            .with_string_to_value(Arc::new(|s| {
+                s.trim().parse::<f32>().ok()
+            })),
 
             bypass: BoolParam::new("Bypass", false),
         }
     }
 }
+

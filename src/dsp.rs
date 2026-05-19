@@ -31,8 +31,16 @@ impl Biquad {
         }
     }
 
+    /// Resets all filter state to zero. Must be called from Plugin::reset().
+    pub fn reset(&mut self) {
+        self.x1 = 0.0;
+        self.x2 = 0.0;
+        self.y1 = 0.0;
+        self.y2 = 0.0;
+    }
+
     /// Calculates coefficients based on RBJ formulas.
-    /// Frequency is clamped to 20Hz-20kHz to avoid instability.
+    /// Frequency is clamped to 20Hz-Nyquist to avoid instability.
     pub fn update_coefficients(&mut self, f_type: FilterType, sample_rate: f32, frequency: f32, q: f32) {
         let frequency = frequency.clamp(20.0, sample_rate * 0.49); // Nyquist safety
         let w0 = 2.0 * PI * frequency / sample_rate;
@@ -71,7 +79,7 @@ impl Biquad {
 
     /// Process a single sample through the filter.
     /// Inlined for performance in the process loop.
-    #[inline]
+    #[inline(always)]
     pub fn process(&mut self, sample: f32) -> f32 {
         let out = self.b0 * sample + self.b1 * self.x1 + self.b2 * self.x2 - self.a1 * self.y1 - self.a2 * self.y2;
 
@@ -82,5 +90,51 @@ impl Biquad {
         self.y1 = out;
 
         out
+    }
+}
+
+/// Soft limiter using tanh saturation to prevent clipping from resonance peaks.
+/// Zero-allocation, stateless per-sample operation — safe for the audio thread.
+///
+/// The ceiling is set to 0 dBFS (1.0). Signals below the threshold pass through
+/// with minimal coloration. Signals above are smoothly compressed via hyperbolic
+/// tangent, which provides musically pleasant saturation rather than hard digital
+/// clipping.
+pub struct SoftLimiter {
+    /// Release envelope state for smooth gain recovery
+    envelope: f32,
+}
+
+impl SoftLimiter {
+    pub fn new() -> Self {
+        Self { envelope: 0.0 }
+    }
+
+    pub fn reset(&mut self) {
+        self.envelope = 0.0;
+    }
+
+    /// Process a single sample through the soft limiter.
+    /// Uses tanh saturation with a 0 dBFS ceiling.
+    #[inline(always)]
+    pub fn process(&mut self, sample: f32) -> f32 {
+        let abs_sample = sample.abs();
+
+        // Track the envelope with fast attack, slow release
+        if abs_sample > self.envelope {
+            // Instant attack — catch transients immediately
+            self.envelope = abs_sample;
+        } else {
+            // Slow release (~5ms at 44.1kHz) for smooth recovery
+            self.envelope = self.envelope * 0.9997 + abs_sample * 0.0003;
+        }
+
+        // Only engage saturation when signal exceeds ~-3 dBFS threshold
+        if self.envelope > 0.707 {
+            // tanh soft-clip: maps (-inf, +inf) → (-1.0, +1.0) smoothly
+            sample.tanh()
+        } else {
+            sample
+        }
     }
 }

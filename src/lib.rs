@@ -5,7 +5,7 @@ mod dsp;
 mod editor;
 mod params;
 
-use dsp::{Biquad, FilterType};
+use dsp::{Biquad, FilterType, SoftLimiter};
 use params::MyFilterParams;
 
 pub struct MyFilter {
@@ -14,6 +14,8 @@ pub struct MyFilter {
     lp_filter_r: Biquad,
     hp_filter_l: Biquad,
     hp_filter_r: Biquad,
+    limiter_l: SoftLimiter,
+    limiter_r: SoftLimiter,
 }
 
 impl Default for MyFilter {
@@ -24,15 +26,17 @@ impl Default for MyFilter {
             lp_filter_r: Biquad::new(),
             hp_filter_l: Biquad::new(),
             hp_filter_r: Biquad::new(),
+            limiter_l: SoftLimiter::new(),
+            limiter_r: SoftLimiter::new(),
         }
     }
 }
 
 impl Plugin for MyFilter {
-    const NAME: &'static str = "LHFilter";
+    const NAME: &'static str = "lf_filter V1";
     const VENDOR: &'static str = "Creator";
-    const URL: &'static str = "https://example.com";
-    const EMAIL: &'static str = "info@example.com";
+    const URL: &'static str = "";
+    const EMAIL: &'static str = "jaqueole@gmail.com";
 
     const VERSION: &'static str = env!("CARGO_PKG_VERSION");
 
@@ -63,12 +67,18 @@ impl Plugin for MyFilter {
         _buffer_config: &BufferConfig,
         _context: &mut impl InitContext<Self>,
     ) -> bool {
-        // Reset filter states to avoid pops on initialization
-        self.lp_filter_l = Biquad::new();
-        self.lp_filter_r = Biquad::new();
-        self.hp_filter_l = Biquad::new();
-        self.hp_filter_r = Biquad::new();
+        self.reset();
         true
+    }
+
+    fn reset(&mut self) {
+        // Reset all DSP component states to avoid pops
+        self.lp_filter_l.reset();
+        self.lp_filter_r.reset();
+        self.hp_filter_l.reset();
+        self.hp_filter_r.reset();
+        self.limiter_l.reset();
+        self.limiter_r.reset();
     }
 
     fn process(
@@ -104,9 +114,11 @@ impl Plugin for MyFilter {
                 if channel_idx == 0 {
                     *sample = self.lp_filter_l.process(*sample);
                     *sample = self.hp_filter_l.process(*sample);
+                    *sample = self.limiter_l.process(*sample);
                 } else if channel_idx == 1 {
                     *sample = self.lp_filter_r.process(*sample);
                     *sample = self.hp_filter_r.process(*sample);
+                    *sample = self.limiter_r.process(*sample);
                 }
             }
         }
