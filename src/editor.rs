@@ -64,7 +64,7 @@ pub fn create_editor(
                             
                             ui.vertical_centered(|ui| {
                                 ui.add_space(10.0);
-                                ui.heading(egui::RichText::new("lf_filter V1").size(22.0).strong().color(egui::Color32::from_rgb(200, 200, 200)));
+                                ui.heading(egui::RichText::new("lh_filter V1").size(22.0).strong().color(egui::Color32::from_rgb(200, 200, 200)));
                                 ui.add_space(2.0);
                                 ui.label(egui::RichText::new("Low & High Pass Filter").size(12.0).color(egui::Color32::from_rgb(140, 140, 140)));
                                 ui.add_space(5.0);
@@ -150,7 +150,7 @@ pub fn create_editor(
 
                         ui.vertical_centered(|ui| {
                             ui.add_space(8.0);
-                            ui.label(egui::RichText::new("lf_filter V1").size(20.0).strong());
+                            ui.label(egui::RichText::new("lh_filter V1").size(20.0).strong());
                             ui.add_space(6.0);
                             ui.label(egui::RichText::new("Dual-mode Low-Pass & High-Pass frequency filter\nwith resonance control and soft-limiting output stage.\nDesigned for precise frequency shaping in any mix chain.")
                                 .size(12.0).color(egui::Color32::from_rgb(170, 170, 170)));
