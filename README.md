@@ -1,14 +1,17 @@
-# LHFilter
+# lf_filter V1
 
-**LHFilter** is a simple VST3 audio plugin that features highly optimized Low-Pass and High-Pass filters, alongside precise Q-Factor resonance control. Built on the blazing-fast Rust `nih-plug` framework and featuring a custom `egui` graphical interface, it is designed for both performance and premium user experience.
+**lf_filter V1** is a simple VST3 audio plugin featuring Low-Pass and High-Pass filters with Q-Factor resonance control and a built-in soft limiter. Built with Rust using the `nih-plug` framework and a custom `egui` graphical interface.
 
 ## Features
-- **Low-Pass & High-Pass Filters**: 20 Hz to 20,000 Hz coverage utilizing flawless mathematical logarithmic scaling (`FloatRange::Skewed`) for smooth, natural frequency sweeping.
+- **Low-Pass & High-Pass Filters**: 20 Hz to 20,000 Hz coverage with logarithmic scaling (`FloatRange::Skewed`) for smooth, natural frequency sweeping.
 - **Q-Factor Control**: Linear control over filter resonance (0.1 to 10.0).
-- **Custom UI System**: Hand-coded rotary knob widgets that bypass generic slider limitations.
-- **Precision Tuning**: Hold `Ctrl` (or `Cmd` on Mac) while dragging or scrolling the knobs to enter precision mode (10x slower movement), accompanied by a distinct blue visual indicator.
-- **Bidirectional Sync**: Type exact values into the text fields to immediately update the knobs, or rotate the knobs to watch the text fields update in real time. 
-- **Quick Reset**: Double-click any knob to instantly snap it back to its optimal default value.
+- **Soft Limiter**: Built-in `tanh` saturation stage prevents clipping when resonance peaks from combined LP/HP filters exceed 0 dBFS. Engages automatically — clean output at all settings.
+- **Custom UI**: Hand-coded rotary knob widgets with a subtle black-to-grey gradient background.
+- **Precision Tuning**: Hold `Shift` while dragging or scrolling knobs for 10x finer control, with a blue visual indicator.
+- **Bidirectional Sync**: Type exact values into text fields to update knobs, or rotate knobs to update text fields in real time.
+- **Quick Reset**: Double-click any knob to snap back to its default value.
+- **About Window**: Footer button opens an overlay with plugin info and contact details.
+- **Bypass**: Global bypass switch to pass audio through unprocessed.
 
 ## Technology Stack
 - **Language**: Rust
@@ -18,24 +21,23 @@
 
 ## Building from Source
 
-This repository utilizes the `xtask` pattern to bundle the plugin directly into a `.vst3` directory format.
+This repository uses the `xtask` pattern to bundle the plugin into a `.vst3` directory format.
 
 ### Requirements
 - Rust (latest stable)
-- `cargo` 
+- `cargo`
 - A supported cross-compilation toolchain if building for other platforms (e.g., `x86_64-w64-mingw32-gcc` for Windows cross-compilation from Linux).
 
 ### Compilation
-To build the plugin and generate the bundled VST3 file, run:
+To build the plugin and generate the bundled VST3 file:
 
 ```bash
-cargo xtask bundle lh_filter --release
+cargo xtask bundle lh_filter --release --frozen
 ```
 
 #### Windows Cross-Compilation (From Linux)
-If you are on Linux and wish to compile the Windows `.vst3` plugin, use the following target flag:
 ```bash
-cargo xtask bundle lh_filter --release --target x86_64-pc-windows-gnu
+cargo xtask bundle lh_filter --release --target x86_64-pc-windows-gnu --frozen
 ```
 
 The resulting `lh_filter.vst3` bundle will be located in the `target/bundled/` directory.
@@ -46,5 +48,13 @@ Copy the generated `.vst3` directory into your DAW's designated VST3 folder:
 - **Linux**: `~/.vst3/` or `/usr/lib/vst3/`
 - **macOS**: `/Library/Audio/Plug-Ins/VST3/`
 
+The plugin will appear in your DAW under **Creator → lf_filter V1**.
+
+## Author
+Created by Oleg Chizhov aka Чеширьsky
+
+Contact: jaqueole@gmail.com
+
 ## License
 MIT License.
+
