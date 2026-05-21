@@ -4,7 +4,6 @@
 
 ## Features
 - **Low-Pass & High-Pass Filters**: 20 Hz to 20,000 Hz coverage with logarithmic scaling (`FloatRange::Skewed`) for smooth, natural frequency sweeping.
-- **Low-Pass & High-Pass Filters**: 20 Hz to 20,000 Hz coverage with logarithmic scaling (`FloatRange::Skewed`) for smooth, natural frequency sweeping.
 - **Q-Factor Control**: Linear control over filter resonance (0.1 to 10.0).
 - **Soft Limiter**: Built-in `tanh` saturation stage prevents clipping when resonance peaks from combined LP/HP filters exceed 0 dBFS. Engages automatically — clean output at all settings.
 - **Custom UI**: Hand-coded rotary knob widgets with a subtle black-to-grey gradient background.
