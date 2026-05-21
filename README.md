@@ -33,7 +33,6 @@ This repository uses the `xtask` pattern to bundle the plugin into a `.vst3` dir
 ### Requirements
 - Rust (latest stable)
 - `cargo`
-- `cargo`
 - A supported cross-compilation toolchain if building for other platforms (e.g., `x86_64-w64-mingw32-gcc` for Windows cross-compilation from Linux).
 
 ### Compilation
