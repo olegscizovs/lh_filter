@@ -29,7 +29,6 @@
 ## Building from Source
 
 This repository uses the `xtask` pattern to bundle the plugin into a `.vst3` directory format.
-This repository uses the `xtask` pattern to bundle the plugin into a `.vst3` directory format.
 
 ### Requirements
 - Rust (latest stable)
@@ -39,16 +38,13 @@ This repository uses the `xtask` pattern to bundle the plugin into a `.vst3` dir
 
 ### Compilation
 To build the plugin and generate the bundled VST3 file:
-To build the plugin and generate the bundled VST3 file:
 
 ```bash
-cargo xtask bundle lh_filter --release --frozen
 cargo xtask bundle lh_filter --release --frozen
 ```
 
 #### Windows Cross-Compilation (From Linux)
 ```bash
-cargo xtask bundle lh_filter --release --target x86_64-pc-windows-gnu --frozen
 cargo xtask bundle lh_filter --release --target x86_64-pc-windows-gnu --frozen
 ```
 
