@@ -62,7 +62,8 @@ Created by Oleg Chizhov aka Чеширьsky
 
 Contact: jaqueole@gmail.com
 
-## License
-MIT License.
+### License & Trademarks
 
+This project is licensed under the [MIT License](LICENSE).
 
+VST is a registered trademark of Steinberg Media Technologies GmbH.
