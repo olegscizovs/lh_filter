@@ -345,10 +345,10 @@ fn render_about_dialog(egui_ctx: &egui::Context, state: &mut InternalState) {
 /// Normalized value in range `[0.0, 1.0]`.
 pub fn real_to_plain(real_val: f32, bounds: ParamBounds) -> f32 {
     let normalized = ((real_val - bounds.min) / (bounds.max - bounds.min)).clamp(0.0, 1.0);
-    if bounds.skew_factor != 1.0 {
-        normalized.powf(1.0 / bounds.skew_factor)
-    } else {
+    if (bounds.skew_factor - 1.0).abs() < f32::EPSILON {
         normalized
+    } else {
+        normalized.powf(1.0 / bounds.skew_factor)
     }
 }
 
@@ -362,10 +362,10 @@ pub fn real_to_plain(real_val: f32, bounds: ParamBounds) -> f32 {
 /// Real parameter value in native units (e.g., Hz).
 pub fn plain_to_real(plain_val: f32, bounds: ParamBounds) -> f32 {
     let clamped_plain = plain_val.clamp(0.0, 1.0);
-    if bounds.skew_factor != 1.0 {
-        bounds.min + (bounds.max - bounds.min) * clamped_plain.powf(bounds.skew_factor)
-    } else {
+    if (bounds.skew_factor - 1.0).abs() < f32::EPSILON {
         bounds.min + clamped_plain * (bounds.max - bounds.min)
+    } else {
+        bounds.min + (bounds.max - bounds.min) * clamped_plain.powf(bounds.skew_factor)
     }
 }
 

@@ -62,7 +62,7 @@ impl Default for MyFilter {
 ///
 /// # Returns
 /// Processed floating-point audio sample.
-#[inline(always)]
+#[inline]
 fn process_channel_sample(
     sample: f32,
     lp: &mut Biquad,

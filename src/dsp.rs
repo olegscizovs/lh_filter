@@ -148,7 +148,7 @@ impl Biquad {
     ///
     /// # Returns
     /// Filtered floating-point audio sample.
-    #[inline(always)]
+    #[inline]
     pub fn process(&mut self, sample: f32) -> f32 {
         let output = self.b0 * sample + self.s1;
 
@@ -188,6 +188,10 @@ impl SoftLimiter {
     }
 
     /// Resets the soft limiter state.
+    ///
+    /// **Why `&mut self`:** Maintains API symmetry with `Biquad::reset()` so both
+    /// DSP blocks can be reset identically in `MyFilter::reset()`.
+    #[allow(clippy::unused_self)]
     pub fn reset(&mut self) {}
 
     /// Processes a single audio sample through a continuous soft-knee saturation curve.
@@ -197,7 +201,10 @@ impl SoftLimiter {
     ///
     /// # Returns
     /// Output audio sample, smoothly compressed if exceeding -3 dBFS threshold, strictly capped at 0 dBFS.
-    #[inline(always)]
+    /// **Why `&mut self`:** Maintains API symmetry with `Biquad::process()` so the
+    /// `process_channel_sample()` pipeline can call both identically.
+    #[inline]
+    #[allow(clippy::unused_self)]
     pub fn process(&mut self, sample: f32) -> f32 {
         let abs_sample = sample.abs();
 
