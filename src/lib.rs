@@ -63,7 +63,12 @@ impl Default for MyFilter {
 /// # Returns
 /// Processed floating-point audio sample.
 #[inline(always)]
-fn process_channel_sample(sample: f32, lp: &mut Biquad, hp: &mut Biquad, limiter: &mut SoftLimiter) -> f32 {
+fn process_channel_sample(
+    sample: f32,
+    lp: &mut Biquad,
+    hp: &mut Biquad,
+    limiter: &mut SoftLimiter,
+) -> f32 {
     let lowpassed = lp.process(sample);
     let highpassed = hp.process(lowpassed);
     limiter.process(highpassed)
@@ -154,19 +159,49 @@ impl Plugin for MyFilter {
             let hp_freq = self.params.hp_freq.smoothed.next();
             let q_factor = self.params.q.smoothed.next();
 
-            self.lp_filter_l.update_coefficients(FilterType::Lowpass, sample_rate, lp_freq, q_factor);
-            self.lp_filter_r.update_coefficients(FilterType::Lowpass, sample_rate, lp_freq, q_factor);
-            self.hp_filter_l.update_coefficients(FilterType::Highpass, sample_rate, hp_freq, q_factor);
-            self.hp_filter_r.update_coefficients(FilterType::Highpass, sample_rate, hp_freq, q_factor);
+            self.lp_filter_l.update_coefficients(
+                FilterType::Lowpass,
+                sample_rate,
+                lp_freq,
+                q_factor,
+            );
+            self.lp_filter_r.update_coefficients(
+                FilterType::Lowpass,
+                sample_rate,
+                lp_freq,
+                q_factor,
+            );
+            self.hp_filter_l.update_coefficients(
+                FilterType::Highpass,
+                sample_rate,
+                hp_freq,
+                q_factor,
+            );
+            self.hp_filter_r.update_coefficients(
+                FilterType::Highpass,
+                sample_rate,
+                hp_freq,
+                q_factor,
+            );
 
             for channel_idx in 0..num_channels {
                 let sample = &mut buffer.as_slice()[channel_idx][sample_index];
                 let dry_sample = *sample;
 
                 let wet_sample = if channel_idx == LEFT_CHANNEL_INDEX {
-                    process_channel_sample(dry_sample, &mut self.lp_filter_l, &mut self.hp_filter_l, &mut self.limiter_l)
+                    process_channel_sample(
+                        dry_sample,
+                        &mut self.lp_filter_l,
+                        &mut self.hp_filter_l,
+                        &mut self.limiter_l,
+                    )
                 } else if channel_idx == RIGHT_CHANNEL_INDEX {
-                    process_channel_sample(dry_sample, &mut self.lp_filter_r, &mut self.hp_filter_r, &mut self.limiter_r)
+                    process_channel_sample(
+                        dry_sample,
+                        &mut self.lp_filter_r,
+                        &mut self.hp_filter_r,
+                        &mut self.limiter_r,
+                    )
                 } else {
                     dry_sample
                 };
@@ -182,7 +217,8 @@ impl Plugin for MyFilter {
 
 impl Vst3Plugin for MyFilter {
     const VST3_CLASS_ID: [u8; 16] = *b"AntigravityFiltr";
-    const VST3_SUBCATEGORIES: &'static [Vst3SubCategory] = &[Vst3SubCategory::Filter, Vst3SubCategory::Fx];
+    const VST3_SUBCATEGORIES: &'static [Vst3SubCategory] =
+        &[Vst3SubCategory::Filter, Vst3SubCategory::Fx];
 }
 
 nih_export_vst3!(MyFilter);

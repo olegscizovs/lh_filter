@@ -147,9 +147,18 @@ fn render_background(egui_ctx: &egui::Context) {
 fn render_header(ui: &mut egui::Ui) {
     ui.vertical_centered(|ui| {
         ui.add_space(10.0);
-        ui.heading(egui::RichText::new("lh_filter V1").size(22.0).strong().color(COLOR_TEXT_TITLE));
+        ui.heading(
+            egui::RichText::new("lh_filter V1")
+                .size(22.0)
+                .strong()
+                .color(COLOR_TEXT_TITLE),
+        );
         ui.add_space(2.0);
-        ui.label(egui::RichText::new("Low & High Pass Filter").size(12.0).color(COLOR_TEXT_SUBTITLE));
+        ui.label(
+            egui::RichText::new("Low & High Pass Filter")
+                .size(12.0)
+                .color(COLOR_TEXT_SUBTITLE),
+        );
         ui.add_space(5.0);
         render_divider(ui);
         ui.add_space(5.0);
@@ -187,11 +196,32 @@ fn render_main_grid(
         .spacing(egui::vec2(40.0, 20.0))
         .min_col_width(150.0)
         .show(ui, |ui| {
-            knob_widget(ui, setter, &params.lp_freq, "Low Pass", KNOB_RADIUS_LARGE, &mut state.lp_freq_str);
-            knob_widget(ui, setter, &params.hp_freq, "High Pass", KNOB_RADIUS_LARGE, &mut state.hp_freq_str);
+            knob_widget(
+                ui,
+                setter,
+                &params.lp_freq,
+                "Low Pass",
+                KNOB_RADIUS_LARGE,
+                &mut state.lp_freq_str,
+            );
+            knob_widget(
+                ui,
+                setter,
+                &params.hp_freq,
+                "High Pass",
+                KNOB_RADIUS_LARGE,
+                &mut state.hp_freq_str,
+            );
             ui.end_row();
 
-            knob_widget(ui, setter, &params.q, "Q Factor", KNOB_RADIUS_SMALL, &mut state.q_str);
+            knob_widget(
+                ui,
+                setter,
+                &params.q,
+                "Q Factor",
+                KNOB_RADIUS_SMALL,
+                &mut state.q_str,
+            );
 
             render_bypass_checkbox(ui, setter, &params.bypass);
             ui.end_row();
@@ -226,13 +256,22 @@ fn render_bypass_checkbox(ui: &mut egui::Ui, setter: &ParamSetter, bypass_param:
 fn render_footer(ui: &mut egui::Ui, state: &mut InternalState) {
     ui.horizontal(|ui| {
         ui.add_space(5.0);
-        ui.label(egui::RichText::new("v0.1.0").size(11.0).color(COLOR_TEXT_MUTED));
+        ui.label(
+            egui::RichText::new("v0.1.0")
+                .size(11.0)
+                .color(COLOR_TEXT_MUTED),
+        );
         ui.with_layout(egui::Layout::right_to_left(egui::Align::Center), |ui| {
             ui.add_space(5.0);
             if ui
-                .add(egui::Button::new(
-                    egui::RichText::new("ℹ About").size(11.0).color(egui::Color32::from_rgb(160, 160, 160)),
-                ).frame(false))
+                .add(
+                    egui::Button::new(
+                        egui::RichText::new("ℹ About")
+                            .size(11.0)
+                            .color(egui::Color32::from_rgb(160, 160, 160)),
+                    )
+                    .frame(false),
+                )
                 .clicked()
             {
                 state.show_about = !state.show_about;
@@ -378,7 +417,9 @@ fn knob_widget(
         let is_shift = ui.input(|i| i.modifiers.shift);
 
         let label_text = if is_shift {
-            egui::RichText::new(label).strong().color(COLOR_TEXT_PRECISION)
+            egui::RichText::new(label)
+                .strong()
+                .color(COLOR_TEXT_PRECISION)
         } else {
             egui::RichText::new(label).strong()
         };
@@ -386,7 +427,8 @@ fn knob_widget(
         ui.add_space(5.0);
 
         let size = radius * 2.2;
-        let (rect, response) = ui.allocate_at_least(egui::vec2(size, size), egui::Sense::click_and_drag());
+        let (rect, response) =
+            ui.allocate_at_least(egui::vec2(size, size), egui::Sense::click_and_drag());
         let text_edit_id = ui.make_persistent_id(label);
 
         let bounds = extract_range_bounds(param);
@@ -498,7 +540,12 @@ fn draw_knob_visuals(
     let painter = ui.painter();
     let center = rect.center();
 
-    painter.circle(center, radius + 1.5, COLOR_KNOB_BG, egui::Stroke::new(1.0, COLOR_KNOB_BORDER));
+    painter.circle(
+        center,
+        radius + 1.5,
+        COLOR_KNOB_BG,
+        egui::Stroke::new(1.0, COLOR_KNOB_BORDER),
+    );
     painter.circle(center, radius, COLOR_KNOB_BODY, egui::Stroke::NONE);
 
     let stroke = if is_shift && response.hovered() {
@@ -509,9 +556,13 @@ fn draw_knob_visuals(
     painter.circle(center, radius, egui::Color32::TRANSPARENT, stroke);
 
     let current_angle = KNOB_START_ANGLE + normalized_plain * (KNOB_END_ANGLE - KNOB_START_ANGLE);
-    let needle_end = center + egui::vec2(current_angle.cos(), current_angle.sin()) * (radius * 0.85);
+    let needle_end =
+        center + egui::vec2(current_angle.cos(), current_angle.sin()) * (radius * 0.85);
 
-    painter.line_segment([center, needle_end], egui::Stroke::new(3.0, COLOR_KNOB_NEEDLE));
+    painter.line_segment(
+        [center, needle_end],
+        egui::Stroke::new(3.0, COLOR_KNOB_NEEDLE),
+    );
     painter.circle_filled(center, radius * 0.12, COLOR_KNOB_NEEDLE);
 }
 
@@ -549,7 +600,9 @@ fn render_param_text_entry(
 
     let edit_response = ui.add_sized([radius * 2.8, 24.0], text_edit);
 
-    if edit_response.lost_focus() || (edit_response.has_focus() && ui.input(|i| i.key_pressed(egui::Key::Enter))) {
+    if edit_response.lost_focus()
+        || (edit_response.has_focus() && ui.input(|i| i.key_pressed(egui::Key::Enter)))
+    {
         if let Ok(parsed) = text_buf.parse::<f32>() {
             let clamped_real = parsed.clamp(bounds.min, bounds.max);
 
