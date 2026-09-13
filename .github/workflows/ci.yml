@@ -1,0 +1,92 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  check-and-test:
+    name: Quality Checks & Unit Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Install Linux Audio & X11 Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libxcb1-dev libxcb-render0-dev libxcb-shape0-dev libxcb-xfixes0-dev libx11-dev libasound2-dev
+
+      - name: Install Stable Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          components: clippy, rustfmt
+
+      - name: Cache Cargo Dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/bin/
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
+            ~/.cargo/git/db/
+            target/
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+
+      - name: Check Code Formatting
+        run: cargo fmt --check
+
+      - name: Run Clippy Lints
+        run: cargo clippy -- -D warnings
+
+      - name: Run Unit Tests
+        run: cargo test
+
+  build-plugins:
+    name: Build Plugin Bundles (${{ matrix.os }})
+    needs: check-and-test
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Install Linux Dependencies
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libxcb1-dev libxcb-render0-dev libxcb-shape0-dev libxcb-xfixes0-dev libx11-dev libasound2-dev
+
+      - name: Install Stable Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Bundle Plugin
+        run: cargo xtask bundle lh_filter --release
+
+      - name: Upload Linux Artifacts
+        if: runner.os == 'Linux'
+        uses: actions/upload-artifact@v4
+        with:
+          name: lh_filter-Linux-VST3
+          path: target/bundled/*.vst3
+
+      - name: Upload Windows Artifacts
+        if: runner.os == 'Windows'
+        uses: actions/upload-artifact@v4
+        with:
+          name: lh_filter-Windows-VST3
+          path: target/bundled/*.vst3
+
+      - name: Upload macOS Artifacts
+        if: runner.os == 'macOS'
+        uses: actions/upload-artifact@v4
+        with:
+          name: lh_filter-macOS-VST3
+          path: target/bundled/*.vst3

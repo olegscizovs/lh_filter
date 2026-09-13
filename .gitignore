@@ -1,5 +1,23 @@
+# Build targets
+target/
 /target
+
+# Compiled Audio Plugin Bundles & Binaries
+*.vst3
+*.clap
+*.so
+*.dll
+*.dylib
+
+# Environment & Sensitive Credentials
 .env
 .env.*
 *.pem
 id_rsa
+
+# OS & Editor temporary files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
