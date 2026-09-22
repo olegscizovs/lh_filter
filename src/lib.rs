@@ -75,7 +75,7 @@ fn process_channel_sample(
 }
 
 impl Plugin for MyFilter {
-    const NAME: &'static str = "lh_filter V1";
+    const NAME: &'static str = "lh_filter V1.1";
     const VENDOR: &'static str = "Creator";
     const URL: &'static str = "";
     const EMAIL: &'static str = "jaqueole@gmail.com";

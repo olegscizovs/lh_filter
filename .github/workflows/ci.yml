@@ -75,19 +75,19 @@ jobs:
         if: runner.os == 'Linux'
         uses: actions/upload-artifact@v4
         with:
-          name: lh_filter-Linux-VST3
+          name: lh_filter-v1.1-Linux-VST3
           path: target/bundled/*.vst3
 
       - name: Upload Windows Artifacts
         if: runner.os == 'Windows'
         uses: actions/upload-artifact@v4
         with:
-          name: lh_filter-Windows-VST3
+          name: lh_filter-v1.1-Windows-VST3
           path: target/bundled/*.vst3
 
       - name: Upload macOS Artifacts
         if: runner.os == 'macOS'
         uses: actions/upload-artifact@v4
         with:
-          name: lh_filter-macOS-VST3
+          name: lh_filter-v1.1-macOS-VST3
           path: target/bundled/*.vst3
