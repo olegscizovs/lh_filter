@@ -20,7 +20,7 @@ jobs:
       - name: Install Linux Audio & X11 Dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y libxcb1-dev libxcb-render0-dev libxcb-shape0-dev libxcb-xfixes0-dev libx11-dev libasound2-dev
+          sudo apt-get install -y libxcb1-dev libxcb-render0-dev libxcb-shape0-dev libxcb-xfixes0-dev libx11-dev libasound2-dev libgl1-mesa-dev libgl-dev libegl1-mesa-dev libxcursor-dev libxrandr-dev libxi-dev
 
       - name: Install Stable Rust
         uses: dtolnay/rust-toolchain@stable
@@ -63,7 +63,7 @@ jobs:
         if: runner.os == 'Linux'
         run: |
           sudo apt-get update
-          sudo apt-get install -y libxcb1-dev libxcb-render0-dev libxcb-shape0-dev libxcb-xfixes0-dev libx11-dev libasound2-dev
+          sudo apt-get install -y libxcb1-dev libxcb-render0-dev libxcb-shape0-dev libxcb-xfixes0-dev libx11-dev libasound2-dev libgl1-mesa-dev libgl-dev libegl1-mesa-dev libxcursor-dev libxrandr-dev libxi-dev
 
       - name: Install Stable Rust
         uses: dtolnay/rust-toolchain@stable
