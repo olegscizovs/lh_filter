@@ -148,7 +148,7 @@ fn render_header(ui: &mut egui::Ui) {
     ui.vertical_centered(|ui| {
         ui.add_space(10.0);
         ui.heading(
-            egui::RichText::new("lh_filter V1")
+            egui::RichText::new("lh_filter V1.1")
                 .size(22.0)
                 .strong()
                 .color(COLOR_TEXT_TITLE),
@@ -257,7 +257,7 @@ fn render_footer(ui: &mut egui::Ui, state: &mut InternalState) {
     ui.horizontal(|ui| {
         ui.add_space(5.0);
         ui.label(
-            egui::RichText::new("v0.1.0")
+            egui::RichText::new("v1.1.0")
                 .size(11.0)
                 .color(COLOR_TEXT_MUTED),
         );
@@ -297,7 +297,7 @@ fn render_about_dialog(egui_ctx: &egui::Context, state: &mut InternalState) {
 
             ui.vertical_centered(|ui| {
                 ui.add_space(8.0);
-                ui.label(egui::RichText::new("lh_filter V1").size(20.0).strong());
+                ui.label(egui::RichText::new("lh_filter V1.1").size(20.0).strong());
                 ui.add_space(6.0);
                 ui.label(
                     egui::RichText::new(

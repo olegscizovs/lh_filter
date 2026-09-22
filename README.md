@@ -1,6 +1,6 @@
-# lh_filter V1
+# lh_filter V1.1
 
-**lh_filter V1** is a simple VST3 audio plugin featuring Low-Pass and High-Pass filters with Q-Factor resonance control and a built-in soft limiter. Built with Rust using the `nih-plug` framework and a custom `egui` graphical interface.
+**lh_filter V1.1** is a simple VST3 audio plugin featuring Low-Pass and High-Pass filters with Q-Factor resonance control and a built-in soft limiter. Built with Rust using the `nih-plug` framework and a custom `egui` graphical interface.
 
 ## Features
 - **Low-Pass & High-Pass Filters**: 20 Hz to 20,000 Hz coverage with logarithmic scaling (`FloatRange::Skewed`) for smooth, natural frequency sweeping.
@@ -55,7 +55,7 @@ Copy the generated `.vst3` directory into your DAW's designated VST3 folder:
 - **Linux**: `~/.vst3/` or `/usr/lib/vst3/`
 - **macOS**: `/Library/Audio/Plug-Ins/VST3/`
 
-The plugin will appear in your DAW under **Creator → lh_filter V1**.
+The plugin will appear in your DAW under **Creator → lh_filter V1.1**.
 
 ## Author
 Created by Oleg Chizhov aka Чеширьsky
