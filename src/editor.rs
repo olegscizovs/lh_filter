@@ -175,7 +175,7 @@ fn render_divider(ui: &mut egui::Ui) {
             egui::pos2(ui.available_rect_before_wrap().left(), ui.cursor().top()),
             egui::pos2(ui.available_rect_before_wrap().right(), ui.cursor().top()),
         ],
-        egui::Stroke::new(1.0, COLOR_DIVIDER),
+        egui::Stroke::new(1.0_f32, COLOR_DIVIDER),
     );
 }
 
@@ -313,7 +313,7 @@ fn render_about_dialog(egui_ctx: &egui::Context, state: &mut InternalState) {
                         egui::pos2(ui.available_rect_before_wrap().left() + 20.0, ui.cursor().top()),
                         egui::pos2(ui.available_rect_before_wrap().right() - 20.0, ui.cursor().top()),
                     ],
-                    egui::Stroke::new(1.0, egui::Color32::from_rgb(50, 50, 50)),
+                    egui::Stroke::new(1.0_f32, egui::Color32::from_rgb(50, 50, 50)),
                 );
                 ui.add_space(12.0);
 
@@ -544,14 +544,14 @@ fn draw_knob_visuals(
         center,
         radius + 1.5,
         COLOR_KNOB_BG,
-        egui::Stroke::new(1.0, COLOR_KNOB_BORDER),
+        egui::Stroke::new(1.0_f32, COLOR_KNOB_BORDER),
     );
     painter.circle(center, radius, COLOR_KNOB_BODY, egui::Stroke::NONE);
 
     let stroke = if is_shift && response.hovered() {
-        egui::Stroke::new(2.5, COLOR_TEXT_PRECISION)
+        egui::Stroke::new(2.5_f32, COLOR_TEXT_PRECISION)
     } else {
-        egui::Stroke::new(2.0, COLOR_KNOB_STROKE)
+        egui::Stroke::new(2.0_f32, COLOR_KNOB_STROKE)
     };
     painter.circle(center, radius, egui::Color32::TRANSPARENT, stroke);
 
@@ -561,7 +561,7 @@ fn draw_knob_visuals(
 
     painter.line_segment(
         [center, needle_end],
-        egui::Stroke::new(3.0, COLOR_KNOB_NEEDLE),
+        egui::Stroke::new(3.0_f32, COLOR_KNOB_NEEDLE),
     );
     painter.circle_filled(center, radius * 0.12, COLOR_KNOB_NEEDLE);
 }
