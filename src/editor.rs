@@ -317,11 +317,11 @@ fn render_about_dialog(egui_ctx: &egui::Context, state: &mut InternalState) {
                 );
                 ui.add_space(12.0);
 
-                ui.label(egui::RichText::new("Created by Oleg Chizhov").size(13.0).strong());
+                ui.label(egui::RichText::new("Created by Olegs Chizhovs").size(13.0).strong());
                 ui.add_space(6.0);
-                ui.label(egui::RichText::new("Contact: jaqueole@gmail.com").size(11.5).color(COLOR_TEXT_SUBTITLE));
+                ui.label(egui::RichText::new("Contact: example@gmail.com").size(11.5).color(COLOR_TEXT_SUBTITLE));
                 ui.add_space(3.0);
-                ui.label(egui::RichText::new("PayPal donation: jaqueole@gmail.com").size(11.5).color(COLOR_TEXT_SUBTITLE));
+                ui.label(egui::RichText::new("PayPal donation: example@gmail.com").size(11.5).color(COLOR_TEXT_SUBTITLE));
                 ui.add_space(12.0);
 
                 if ui.button("Close").clicked() {
