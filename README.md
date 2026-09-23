@@ -58,9 +58,7 @@ Copy the generated `.vst3` directory into your DAW's designated VST3 folder:
 The plugin will appear in your DAW under **Creator → lh_filter V1.1**.
 
 ## Author
-Created by Oleg Chizhov aka Чеширьsky
-
-Contact: jaqueole@gmail.com
+Created by Olegs Chizhovs aka Чеширьsky
 
 ### License & Trademarks
 
